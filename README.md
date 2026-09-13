@@ -18,7 +18,7 @@
 
 KidBase replaces the paper-based chaos of running a daycare — sign-in sheets, physical enrollment forms, folders of medical records, Zelle payments nobody tracks — with one centralized system for **owners, staff, and parents**.
 
-It's built as a real-world project: KidBase is being developed for and validated against an actual family daycare, not a class exercise. Every design decision below is documented and justified, not guessed at.
+It's being built for a real family daycare, so it has to actually hold up in daily use — not just look good in a demo. Along the way, the design decisions are written down as they're made instead of living only in my head.
 
 ## Why this project stands out
 
