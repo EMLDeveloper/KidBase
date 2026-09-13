@@ -2,13 +2,12 @@
 
 # 🧸 KidBase
 
-**A preschool & daycare management system, engineered like a real product — not a tutorial project.**
+**A preschool & daycare management system, developed using a documented software engineering process.**
 
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Maven](https://img.shields.io/badge/Maven-C71A36?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
-[![JWT](https://img.shields.io/badge/Auth-JWT-000000?logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
 [![Status](https://img.shields.io/badge/status-in%20development-yellow)]()
 
 </div>
@@ -26,7 +25,7 @@ It's built as a real-world project: KidBase is being developed for and validated
 - **Documented like a real SDLC** — vision, stakeholders, requirements, user stories, MoSCoW prioritization, backlog, MVP scope, architecture, domain model, database design, and API design are all written down in [`docs/`](docs/), not just implied by the code.
 - **11 Architecture Decision Records** — every non-obvious technical choice (modular monolith, soft deletes, JWT auth, feature-based packages...) has a written rationale and trade-off analysis in [`docs/adr/`](docs/adr/).
 - **Diagrams, not just prose** — C4 context & container diagrams, a conceptual data model, a full ERD, and user-flow diagrams. See below.
-- **Security-conscious by design** — role escalation is blocked at the API level (public registration can never create an ADMIN/STAFF account), and identity for sensitive actions (check-in/check-out) is always derived from the JWT, never trusted from the client.
+- **Security-conscious by design** — the API design specifies that role escalation is blocked (public registration can never create an ADMIN/STAFF account) and that identity for sensitive actions (check-in/check-out) is always derived from the JWT, never trusted from the client. See [ADR-005](docs/adr/0005-public-registration-parent-role.md) and [ADR-009](docs/adr/0009-staff-identity-from-jwt.md).
 - **Built in phases, on purpose** — core app first, then Docker, then AWS, then CI/CD. See [ADR-010](docs/adr/0010-build-in-phases.md).
 
 ## Architecture at a glance
@@ -57,16 +56,18 @@ What each role actually does in the MVP:
 
 ## Tech stack
 
-| Layer | Technology |
-| --- | --- |
-| Frontend | React |
-| Backend | Java 21, Spring Boot 4, Maven |
-| Database | PostgreSQL |
-| Persistence | Spring Data JPA, Hibernate |
-| Security | Spring Security, JWT |
-| Testing | JUnit, Mockito |
-| API Docs | Swagger / OpenAPI (planned) |
-| Version Control | Git, GitHub |
+| Layer | Technology | Status |
+| --- | --- | --- |
+| Backend | Java 21, Spring Boot 4, Maven | Implemented |
+| Database | PostgreSQL | Implemented |
+| Persistence | Spring Data JPA, Hibernate | Implemented |
+| Version Control | Git, GitHub | Implemented |
+| Frontend | React | Planned |
+| Security | Spring Security, JWT | Planned |
+| Testing | JUnit, Mockito | Planned |
+| API Docs | Swagger / OpenAPI | Planned |
+
+The project currently ships a working Spring Boot + PostgreSQL backend skeleton with the module layout below; auth, security, the React frontend, and automated tests are designed (see [`docs/`](docs/)) but not yet built.
 
 ## Project structure
 
@@ -119,11 +120,13 @@ Everything below is version-controlled alongside the code, not scattered across 
 
 ## Getting started
 
-**Prerequisites:** Java 21, Maven (or use the included wrapper), PostgreSQL running locally.
+**Prerequisites:** Java 21, Maven (or use the included wrapper), PostgreSQL running locally on **port 5433** (see `spring.datasource.url` in `application.properties` — this project does not use Postgres's default 5432).
+
+**macOS / Linux (bash):**
 
 ```bash
-# 1. Create the database
-createdb kidbase
+# 1. Create the database (adjust -p if your local Postgres uses a different port)
+createdb -p 5433 kidbase
 
 # 2. Set your local PostgreSQL credentials as environment variables
 export DB_USERNAME=postgres
@@ -133,9 +136,23 @@ export DB_PASSWORD=your_local_password
 ./mvnw spring-boot:run
 ```
 
+**Windows (PowerShell):**
+
+```powershell
+# 1. Create the database (adjust -p if your local Postgres uses a different port)
+createdb -p 5433 kidbase
+
+# 2. Set your local PostgreSQL credentials as environment variables
+$env:DB_USERNAME = "postgres"
+$env:DB_PASSWORD = "your_local_password"
+
+# 3. Run the app
+.\mvnw.cmd spring-boot:run
+```
+
 The API will be available at `http://localhost:8081`.
 
-> Database credentials are read from `DB_USERNAME` / `DB_PASSWORD` environment variables (see `src/main/resources/application.properties`) — nothing sensitive is committed to the repo.
+> Database credentials are read from `DB_USERNAME` / `DB_PASSWORD` environment variables in `src/main/resources/application.properties` — nothing sensitive is committed to the repo.
 
 ## Roadmap
 
