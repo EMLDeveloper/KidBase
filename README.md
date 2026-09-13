@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🧸 KidBase
+# KidBase
 
-**A preschool & daycare management system, developed using a documented software engineering process.**
+**A preschool and daycare management system, designed and documented using a full software development lifecycle.**
 
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
@@ -16,31 +16,29 @@
 
 ## What is KidBase?
 
-KidBase replaces the paper-based chaos of running a daycare — sign-in sheets, physical enrollment forms, folders of medical records, Zelle payments nobody tracks — with one centralized system for **owners, staff, and parents**.
+KidBase is a preschool and daycare management system dedicated to automating the daily, repetitive, and time-consuming tasks that burden childcare businesses — such as paperwork, attendance tracking, and document management — making business operations smoother, faster, and more efficient.
 
-It's being built for a real family daycare, so it has to actually hold up in daily use — not just look good in a demo. Along the way, the design decisions are written down as they're made instead of living only in my head.
+## Engineering highlights
 
-## Why this project stands out
-
-- **Documented like a real SDLC** — vision, stakeholders, requirements, user stories, MoSCoW prioritization, backlog, MVP scope, architecture, domain model, database design, and API design are all written down in [`docs/`](docs/), not just implied by the code.
-- **11 Architecture Decision Records** — every non-obvious technical choice (modular monolith, soft deletes, JWT auth, feature-based packages...) has a written rationale and trade-off analysis in [`docs/adr/`](docs/adr/).
-- **Diagrams, not just prose** — C4 context & container diagrams, a conceptual data model, a full ERD, and user-flow diagrams. See below.
-- **Security-conscious by design** — the API design specifies that role escalation is blocked (public registration can never create an ADMIN/STAFF account) and that identity for sensitive actions (check-in/check-out) is always derived from the JWT, never trusted from the client. See [ADR-005](docs/adr/0005-public-registration-parent-role.md) and [ADR-009](docs/adr/0009-staff-identity-from-jwt.md).
-- **Built in phases, on purpose** — core app first, then Docker, then AWS, then CI/CD. See [ADR-010](docs/adr/0010-build-in-phases.md).
+- **Full SDLC documentation** — vision, stakeholders, requirements, user stories, MoSCoW prioritization, backlog, MVP scope, architecture, domain model, database design, and API design are captured in [`docs/`](docs/) rather than left implicit in the code.
+- **11 Architecture Decision Records** — each significant technical decision (modular monolith, soft deletes, JWT authentication, feature-based packaging, and others) is recorded with context, reasoning, and trade-offs in [`docs/adr/`](docs/adr/).
+- **Diagrams as documentation** — C4 context and container diagrams, a conceptual data model, a full ERD, and user-flow diagrams accompany the written design (see below).
+- **Security decisions made explicit** — the API design specifies that public registration cannot create an ADMIN or STAFF account, and that identity for sensitive actions (check-in/check-out) is derived from the JWT rather than trusted from client input. See [ADR-005](docs/adr/0005-public-registration-parent-role.md) and [ADR-009](docs/adr/0009-staff-identity-from-jwt.md).
+- **Phased delivery plan** — the core application is built and validated first; containerization, cloud deployment, and CI/CD are scoped as later, deliberate phases rather than added upfront. See [ADR-010](docs/adr/0010-build-in-phases.md).
 
 ## Architecture at a glance
 
-**C4 Context** — who uses KidBase and what it talks to:
+**C4 Context** — who uses KidBase and what it depends on:
 
 ![C4 Context Diagram](docs/diagrams/01-c4-context.svg)
 
-**C4 Container** — the modular monolith: one Spring Boot app, eight feature modules, one database:
+**C4 Container** — the modular monolith: one Spring Boot application, eight feature modules, one database:
 
 ![C4 Container Diagram](docs/diagrams/02-c4-container.svg)
 
 ## Data model
 
-**Conceptual model** — the domain in ten seconds:
+**Conceptual model** — the domain at a glance:
 
 ![Conceptual Data Model](docs/diagrams/03-conceptual-data-model.svg)
 
@@ -50,7 +48,7 @@ It's being built for a real family daycare, so it has to actually hold up in dai
 
 ## User flow
 
-What each role actually does in the MVP:
+What each role does, step by step, in the MVP:
 
 ![User Flow Diagram](docs/diagrams/05-user-flow.svg)
 
@@ -67,11 +65,11 @@ What each role actually does in the MVP:
 | Testing | JUnit, Mockito | Planned |
 | API Docs | Swagger / OpenAPI | Planned |
 
-The project currently ships a working Spring Boot + PostgreSQL backend skeleton with the module layout below; auth, security, the React frontend, and automated tests are designed (see [`docs/`](docs/)) but not yet built.
+The repository currently contains a working Spring Boot and PostgreSQL backend skeleton with the module layout described below. Authentication, security, the React frontend, and automated tests are fully specified in [`docs/`](docs/) but not yet implemented.
 
 ## Project structure
 
-KidBase is organized as a **modular monolith** — one deployable Spring Boot app, internally split into self-contained feature modules ([ADR-011](docs/adr/0011-feature-based-package-organization.md)):
+KidBase is organized as a **modular monolith** — a single deployable Spring Boot application, internally split into self-contained feature modules (see [ADR-011](docs/adr/0011-feature-based-package-organization.md)):
 
 ```
 com.kidbase
@@ -92,13 +90,11 @@ com.kidbase
 
 ## MVP scope
 
-**In scope:** authentication & role-based access, child enrollment, digital attendance check-in/check-out, staff management, and automatic parent notifications on check-in/check-out.
+**In scope:** authentication and role-based access, child enrollment, digital attendance check-in/check-out, staff management, and automatic parent notifications on check-in/check-out.
 
-**Deliberately out of scope for v1:** billing/payments, infant monitoring logs, daily menus & activity scheduling, staff scheduling, analytics, and a full parent portal — see [`docs/08-mvp-definition.md`](docs/08-mvp-definition.md) for the full reasoning.
+**Deliberately out of scope for v1:** billing and payments, infant monitoring logs, daily menus and activity scheduling, staff scheduling, analytics, and a full parent portal. See [`docs/08-mvp-definition.md`](docs/08-mvp-definition.md) for the full reasoning.
 
 ## Documentation
-
-Everything below is version-controlled alongside the code, not scattered across chat logs or a wiki:
 
 | # | Document |
 | --- | --- |
@@ -120,7 +116,7 @@ Everything below is version-controlled alongside the code, not scattered across 
 
 ## Getting started
 
-**Prerequisites:** Java 21, Maven (or use the included wrapper), PostgreSQL running locally on **port 5433** (see `spring.datasource.url` in `application.properties` — this project does not use Postgres's default 5432).
+**Prerequisites:** Java 21, Maven (or the included wrapper), and PostgreSQL running locally on **port 5433** (see `spring.datasource.url` in `application.properties` — this project does not use PostgreSQL's default port 5432).
 
 **macOS / Linux (bash):**
 
@@ -132,7 +128,7 @@ createdb -p 5433 kidbase
 export DB_USERNAME=postgres
 export DB_PASSWORD=your_local_password
 
-# 3. Run the app
+# 3. Run the application
 ./mvnw spring-boot:run
 ```
 
@@ -146,13 +142,13 @@ createdb -p 5433 kidbase
 $env:DB_USERNAME = "postgres"
 $env:DB_PASSWORD = "your_local_password"
 
-# 3. Run the app
+# 3. Run the application
 .\mvnw.cmd spring-boot:run
 ```
 
-The API will be available at `http://localhost:8081`.
+The API is available at `http://localhost:8081`.
 
-> Database credentials are read from `DB_USERNAME` / `DB_PASSWORD` environment variables in `src/main/resources/application.properties` — nothing sensitive is committed to the repo.
+> Database credentials are read from the `DB_USERNAME` / `DB_PASSWORD` environment variables in `src/main/resources/application.properties`. No credentials are committed to the repository.
 
 ## Roadmap
 
@@ -161,7 +157,7 @@ The API will be available at `http://localhost:8081`.
 | 1 — Core Application | Spring Boot + PostgreSQL, all modules working locally |
 | 2 — Containerization | Docker + docker-compose |
 | 3 — Cloud & Storage | AWS EC2/RDS, S3 for documents, SNS for notifications |
-| 4 — CI/CD | GitHub Actions for automated testing & deployment |
-| 5 — Future | Evaluate microservices, Kafka, Kubernetes if real scale demands it |
+| 4 — CI/CD | GitHub Actions for automated testing and deployment |
+| 5 — Future | Evaluate microservices, Kafka, and Kubernetes if real scale requirements justify them |
 
-See [ADR-010](docs/adr/0010-build-in-phases.md) for the reasoning behind building this way.
+See [ADR-010](docs/adr/0010-build-in-phases.md) for the reasoning behind this phased approach.
